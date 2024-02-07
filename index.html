@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etch-A-Sketch</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: beige;
+        }
+
+        #grid-container {
+            display: grid;
+            grid-template-columns: repeat(16, 1fr);
+            gap: 5px;
+        }
+
+        .square {
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            border: 1px solid #2980b9;
+            transition: background-color 0.3s ease;
+        }
+
+        .square:hover, .square.hovered {
+            background-color: #e74c3c;
+        }       
+
+        #new-grid-btn {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="new-grid-btn" onclick="createNewGrid()">New Grid</button>
+    <div id="grid-container"></div>
+
+    <script>
+                // Function to create a square div
+        function createSquare() {
+            const square = document.createElement('div');
+            square.classList.add('square');
+            square.addEventListener('mouseover', () => {
+                square.style.backgroundColor = '#e74c3c';
+            });
+            return square;
+        }
+
+        // Function to clear the existing grid
+        function clearGrid() {
+            const gridContainer = document.getElementById('grid-container');
+            gridContainer.innerHTML = '';
+        }
+
+        // Function to generate a new grid with the specified number of squares per row
+        function generateGrid(numSquaresPerRow) {
+            const gridContainer = document.getElementById('grid-container');
+
+            // Calculate the width and height of each square
+            const squareWidth = 960 / numSquaresPerRow;
+
+            // Create the new grid
+            for (let i = 0; i < numSquaresPerRow * numSquaresPerRow; i++) {
+                const square = createSquare();
+                square.style.width = `${squareWidth}px`;
+                square.style.height = `${squareWidth}px`;
+                gridContainer.appendChild(square);
+            }
+
+            // Set the grid template columns to the specified number of squares per row
+            gridContainer.style.gridTemplateColumns = `repeat(${numSquaresPerRow}, 1fr)`;
+        }
+
+        // Function to create a new grid based on user input
+        function createNewGrid() {
+            // Prompt user for the number of squares per row
+            const squaresPerRow = prompt('Enter the number of squares per row (max: 100):');
+
+            // Parse the input as an integer
+            const numSquaresPerRow = parseInt(squaresPerRow);
+
+            // Validate input and create the new grid
+            if (!isNaN(numSquaresPerRow) && numSquaresPerRow > 0 && numSquaresPerRow <= 100) {
+                clearGrid();
+                generateGrid(numSquaresPerRow);
+            } else {
+                alert('Please enter a valid number between 1 and 100.');
+            }
+        }
+
+        // Initial grid generation (16x16)
+        generateGrid(16);
+    </script>
+
+</body>
+</html>
